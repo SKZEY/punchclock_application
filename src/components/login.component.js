@@ -3,7 +3,6 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { withRouter, Redirect, Route } from 'react-router-dom';
-import ProfilePage from './profile.component';
 
 import AuthService from "../services/auth.service";
 
@@ -33,6 +32,10 @@ class Login extends Component {
         };
     }
 
+    setCurrentUser = () => {
+        this.props.setCurrentUser();
+    }
+
     onChangeUsername(e) {
         this.setState({
             username: e.target.value
@@ -58,12 +61,7 @@ class Login extends Component {
         if (this.checkBtn.context._errors.length === 0) {
             AuthService.login(this.state.username, this.state.password).then(
                 () => {
-                    return(
-                        <>
-                            <Redirect to={"/profile"} />
-                            <Route exact path={"/profile"} component={ProfilePage} />
-                        </>
-                    );
+                    this.setCurrentUser();
                 },
                 error => {
                     const resMessage =

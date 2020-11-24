@@ -29,16 +29,14 @@ class App extends Component {
     componentDidMount() {
         const user = AuthService.getCurrentUser();
 
-        if (user) {
-            this.setState({
-                currentUser: user,
-                showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-            });
-        }
     }
 
     logOut() {
         AuthService.logout();
+    }
+
+    setCurrentUser = () => {
+        this.setState({currentUser: AuthService.getCurrentUser})
     }
 
     render() {
@@ -51,7 +49,9 @@ class App extends Component {
                     <Div100vh className={"div100"}>
                         <FadeIn>
                             <div className={"main-wrapper"} style={{opacity: "1"}}>
-                                <Route exact path={"/login"} component={LoginPage} />
+                                <Route exact path={"/login"}>
+                                    <LoginPage setCurrentUser={this.setCurrentUser}/>
+                                </Route>
                                 <Link replace={true} to={"/register"}>
                                     <Button style={{textTransform: "capitalize"}} block variant="link" size={"btn-mini"} onClick={() => this.setState({register: true})}>
                                         click here to sign up  <i className="fas fa-arrow-right" />
@@ -63,7 +63,7 @@ class App extends Component {
                 </>
             )
         }
-        if (currentUser !== undefined && currentUser.data.accessToken) {
+        if (currentUser !== undefined) {
             return (
                 <>
                     <Redirect to={"/profile"} />
