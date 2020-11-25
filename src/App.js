@@ -19,20 +19,14 @@ class App extends Component {
         this.logOut = this.logOut.bind(this);
 
         this.state = {
-            showModeratorBoard: false,
-            showAdminBoard: false,
             currentUser: undefined,
             register: false
         };
     }
 
-    componentDidMount() {
-        const user = AuthService.getCurrentUser();
-
-    }
-
-    logOut() {
+    logOut = () => {
         AuthService.logout();
+        this.setState({currentUser: undefined})
     }
 
     setCurrentUser = () => {
@@ -40,7 +34,7 @@ class App extends Component {
     }
 
     render() {
-        const { currentUser, showAdminBoard } = this.state;
+        const { currentUser } = this.state;
         if (currentUser === undefined && this.state.register === false) {
             return (
                 <>
@@ -66,8 +60,10 @@ class App extends Component {
         if (currentUser !== undefined) {
             return (
                 <>
-                    <Redirect to={"/profile"} />
-                    <Route exact path={"/profile"} component={ProfilePage} />
+                    <Redirect to={"/profile/entries"} />
+                    <Route path={"/profile"}>
+                        <ProfilePage logOut={this.logOut} />
+                    </Route>
                 </>
             )
         }

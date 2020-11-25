@@ -64,13 +64,10 @@ class Login extends Component {
                     this.setCurrentUser();
                 },
                 error => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-
+                    let resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                    if (resMessage.includes("403")) {
+                        resMessage = "Username or password wrong!";
+                    }
                     this.setState({
                         loading: false,
                         message: resMessage

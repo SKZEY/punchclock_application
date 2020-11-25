@@ -5,12 +5,22 @@ const API_URL = "http://localhost:8081/";
 
 class UserService {
 
-    getUserBoard() {
-        return axios.get(API_URL + 'users', { headers: authHeader() });
+    getEntries() {
+        return axios.get(API_URL + 'entries', { headers: authHeader() });
     }
 
-    getAdminBoard() {
-        return axios.get(API_URL + 'admin', { headers: authHeader() });
+    createEntry(username, startTime, endTime, category, note) {
+        return axios
+            .post(API_URL + "entries", {
+                username,
+                startTime,
+                endTime,
+                category,
+                note
+            }, { headers: authHeader() })
+            .then(response => {
+                return response;
+            });
     }
 }
 
