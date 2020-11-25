@@ -34,7 +34,7 @@ const vusername = value => {
         return (
             <div className="alert alert-danger" role="alert"
                  style={{margin: ".5rem, 0", fontSize: "12px", backgroundColor: "transparent", borderColor: "transparent", padding: "0", color: "#d93025"}}>
-                <i className="fas fa-exclamation-circle"></i>  The username must be between 3 and 20 characters.
+                <i className="fas fa-exclamation-circle"></i>  Between 3 and 20 characters are required.
             </div>
         );
     }
@@ -45,7 +45,7 @@ const vpassword = value => {
         return (
             <div className="alert alert-danger" role="alert"
                  style={{margin: ".5rem, 0", fontSize: "12px", backgroundColor: "transparent", borderColor: "transparent", padding: "0", color: "#d93025"}}>
-                <i className="fas fa-exclamation-circle"></i>  The password must be between 6 and 40 characters.
+                <i className="fas fa-exclamation-circle"></i>  Between 6 and 40 characters are required.
             </div>
         );
     }

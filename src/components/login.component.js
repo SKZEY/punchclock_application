@@ -34,19 +34,19 @@ class Login extends Component {
 
     setCurrentUser = () => {
         this.props.setCurrentUser();
-    }
+    };
 
     onChangeUsername(e) {
         this.setState({
             username: e.target.value
         });
-    }
+    };
 
     onChangePassword(e) {
         this.setState({
             password: e.target.value
         });
-    }
+    };
 
     handleLogin(e) {
         e.preventDefault();

@@ -16,13 +16,13 @@ class Profile extends Component {
 
     logOut = () => {
         this.props.logOut();
-    }
+    };
 
     render() {
         const { currentUser } = this.state;
 
         return (
-            <div>
+            <div style={{whiteSpace: "nowrap"}}>
                 <Navbar bg="light" variant="light" sticky={"top"}>
                     <Navbar.Brand>
                         <img

@@ -6,15 +6,15 @@ const API_URL = "http://localhost:8081/";
 class UserService {
 
     getEntries() {
-        return axios.get(API_URL + 'entries', { headers: authHeader() });
+        return axios.get(API_URL + 'entries', { headers: authHeader() }).then(response => {return response});
     }
 
-    createEntry(username, startTime, endTime, category, note) {
+    createEntry(username, checkIn, checkOut, category, note) {
         return axios
             .post(API_URL + "entries", {
                 username,
-                startTime,
-                endTime,
+                checkIn,
+                checkOut,
                 category,
                 note
             }, { headers: authHeader() })

@@ -27,11 +27,11 @@ class App extends Component {
     logOut = () => {
         AuthService.logout();
         this.setState({currentUser: undefined})
-    }
+    };
 
     setCurrentUser = () => {
         this.setState({currentUser: AuthService.getCurrentUser})
-    }
+    };
 
     render() {
         const { currentUser } = this.state;
@@ -60,7 +60,7 @@ class App extends Component {
         if (currentUser !== undefined) {
             return (
                 <>
-                    <Redirect to={"/profile/entries"} />
+                    <Redirect push to={"/profile/entries"} />
                     <Route path={"/profile"}>
                         <ProfilePage logOut={this.logOut} />
                     </Route>
