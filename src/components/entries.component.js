@@ -39,6 +39,37 @@ class Entries extends Component {
         );
     }
 
+    deleteEntry(id) {
+        console.log(id);
+        UserService.deleteEntry(id).then(
+            () => {
+                this.getData();
+            },
+            error => {
+                let resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                if (resMessage.includes("403")) {
+                    resMessage = "You are not authorized";
+                }
+                if (resMessage.includes("404")) {
+                    resMessage = "Entry not found";
+                }
+                this.setState({
+                    message: resMessage
+                });
+            }
+        );
+    }
+
+    parseDateTime(dateTime) {
+        const date = dateTime.substr(0, dateTime.indexOf("T", 0));
+        const time = dateTime.substr(dateTime.indexOf("T", 0) + 1, dateTime.length);
+        return(
+            <>
+                {date}<br/>{time}
+            </>
+        )
+    }
+
     render() {
 
         return (
@@ -58,8 +89,8 @@ class Entries extends Component {
                                 <Table responsive borderless>
                                     <thead>
                                         <tr>
-                                            <th>Starttime</th>
-                                            <th>Endtime</th>
+                                            <th style={{textAlign: "center"}}>Starttime</th>
+                                            <th style={{textAlign: "center"}}>Endtime</th>
                                             <th>Username</th>
                                             <th>Category</th>
                                             <th>Note</th>
@@ -69,8 +100,8 @@ class Entries extends Component {
                                     <tbody>
                                         {this.state.data.map((item, index) => (
                                             <tr key={index}>
-                                                <td>{item.checkIn}</td>
-                                                <td>{item.checkOut}</td>
+                                                <td style={{textAlign: "center"}}>{this.parseDateTime(item.checkIn)}</td>
+                                                <td style={{textAlign: "center"}}>{this.parseDateTime(item.checkOut)}</td>
                                                 <td>Test</td>
                                                 <td>Test</td>
                                                 <td>Test</td>
@@ -78,7 +109,12 @@ class Entries extends Component {
                                                     <Button variant={"outline-dark"} size={"sm"}>
                                                         <i className="far fa-edit" />
                                                     </Button>
-                                                    <Button variant={"outline-danger"} size={"sm"} style={{marginLeft: "4px"}}>
+                                                    <Button
+                                                        variant={"outline-danger"}
+                                                        size={"sm"}
+                                                        style={{marginLeft: "4px"}}
+                                                        value={item.id}
+                                                        onClick={() => this.deleteEntry(item.id)}>
                                                         <i className="far fa-trash-alt" />
                                                     </Button>
                                                 </td>

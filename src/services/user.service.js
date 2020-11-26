@@ -22,6 +22,14 @@ class UserService {
                 return response;
             });
     }
+
+    deleteEntry(id) {
+        return axios
+            .delete((API_URL + "entries/" + id.toString()), { headers: authHeader() })
+            .then(response => {
+                return response;
+            });
+    }
 }
 
 export default new UserService();
