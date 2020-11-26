@@ -4,15 +4,25 @@ import UserService from "../services/user.service";
 
 function Entry(props) {
     const [show, setShow] = useState(props.show);
+
     const [startTime, setStartTime] = useState(null);
+
     const [endTime, setEndTime] = useState(null);
+
     const [startDate, setStartDate] = useState(null);
+
     const [endDate, setEndDate] = useState(null);
+
     const [categories, setCategories] = useState([]);
+
     const [category, setCategory] = useState(1);
 
+    const [users, setUsers] = useState([]);
+
+    const [user, setUser] = useState(1);
+
     const handleClose = () => setShow(false);
-    const handleShow = () => {setShow(true); getCategories()};
+    const handleShow = () => {setShow(true); getCategories(); getUsers();};
 
     const handleStartTime = (startTime) => setStartTime(startTime);
     const handleEndTime = (endTime) => setEndTime(endTime);
@@ -22,6 +32,8 @@ function Entry(props) {
 
     const handleCategory = (category) => setCategory(category);
 
+    const handleUser = (user) => setUser(user);
+
     const dateAndTimeToDate = (dateString, timeString) => {
         return new Date(`${dateString}T${timeString}`).toISOString();
     };
@@ -29,7 +41,7 @@ function Entry(props) {
     const createEntry = () => {
         const checkIn = dateAndTimeToDate(startDate, startTime);
         const checkOut = dateAndTimeToDate(endDate, endTime);
-        UserService.createEntry("", checkIn, checkOut, category, "").then(
+        UserService.createEntry(user, checkIn, checkOut, category, "").then(
             () => {
                 getData();
                 handleClose();
@@ -53,6 +65,22 @@ function Entry(props) {
             response => {
                 let categories = response.data;
                 setCategories(categories);
+            },
+            error => {
+                let resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                if (resMessage.includes("403")) {
+                    resMessage = "Something went wrong while saving your data :(";
+                }
+                console.log(resMessage);
+            }
+        )
+    }
+
+    const getUsers = () => {
+        UserService.getUsers().then(
+            response => {
+                let users = response.data;
+                setUsers(users);
             },
             error => {
                 let resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -108,12 +136,11 @@ function Entry(props) {
                         </Form.Group>
                         <Form.Group controlId="selectUser">
                             <Form.Label>User</Form.Label>
-                            <Form.Control as="select">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <Form.Control as="select" onChange={(e) => handleUser(e.target.value)}>
+                                {users.map((item, index) => (
+                                    <option value={item.id}
+                                            key={index}
+                                    >{item.username}</option>))}
                             </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="selectCategory">

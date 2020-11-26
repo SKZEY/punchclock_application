@@ -102,9 +102,9 @@ class Entries extends Component {
                                             <tr key={index}>
                                                 <td style={{textAlign: "center"}}>{this.parseDateTime(item.checkIn)}</td>
                                                 <td style={{textAlign: "center"}}>{this.parseDateTime(item.checkOut)}</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
+                                                <td>{item.category.name}</td>
+                                                <td>{item.category.name}</td>
+                                                <td>not yet implemented</td>
                                                 <td>
                                                     <Button variant={"outline-dark"} size={"sm"}>
                                                         <i className="far fa-edit" />

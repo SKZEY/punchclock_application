@@ -19,7 +19,6 @@ class Profile extends Component {
     };
 
     render() {
-        const { currentUser } = this.state;
 
         return (
             <div style={{whiteSpace: "nowrap"}}>
@@ -35,25 +34,28 @@ class Profile extends Component {
                         PUNCHCLOCK
                     </Navbar.Brand>
                     <Nav className="mr-auto" defaultActiveKey={"entries"}>
-                        <Nav.Link eventKey="entries">
-                            <i className="fas fa-stopwatch"></i> Entries
+                        <Nav.Link eventKey="entries" href={"localhost:8081/profile/entries"}>
+                                <i className="fas fa-stopwatch"/> Entries
                         </Nav.Link>
                         <NavDropdown title={"Users"} id="basic-nav-dropdown">
-                            <NavDropdown.Item eventKey={"manage"}>
-                                <i className="fas fa-user-cog"></i>  Manage
+                            <NavDropdown.Item eventKey={"manage"} href={"localhost:8081/profile/settings"}>
+                                <i className="fas fa-user-cog"/>  Manage
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>
                         <Nav.Item >
                             <Button variant={"link"} size={"sm"} onClick={this.logOut}>
-                                <i className="fas fa-sign-out-alt"></i>  Sign-Out
+                                <i className="fas fa-sign-out-alt"/>  Sign-Out
                             </Button>
                         </Nav.Item>
                     </Nav>
                 </Navbar>
                 <Switch>
                     <Route exact path={"/profile/entries"}>
+                        <Entries />
+                    </Route>
+                    <Route exact path={"/profile/settings"}>
                         <Entries />
                     </Route>
                 </Switch>
