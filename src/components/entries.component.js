@@ -102,7 +102,7 @@ class Entries extends Component {
                                             <tr key={index}>
                                                 <td style={{textAlign: "center"}}>{this.parseDateTime(item.checkIn)}</td>
                                                 <td style={{textAlign: "center"}}>{this.parseDateTime(item.checkOut)}</td>
-                                                <td>{item.category.name}</td>
+                                                <td>{item.applicationUser.username}</td>
                                                 <td>{item.category.name}</td>
                                                 <td>not yet implemented</td>
                                                 <td>
