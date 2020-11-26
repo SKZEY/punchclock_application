@@ -8,15 +8,19 @@ function Entry(props) {
     const [endTime, setEndTime] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState(1);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {setShow(true); getCategories()};
 
     const handleStartTime = (startTime) => setStartTime(startTime);
     const handleEndTime = (endTime) => setEndTime(endTime);
 
     const handleStartDate = (startDate) => setStartDate(startDate);
     const handleEndDate = (endDate) => setEndDate(endDate);
+
+    const handleCategory = (category) => setCategory(category);
 
     const dateAndTimeToDate = (dateString, timeString) => {
         return new Date(`${dateString}T${timeString}`).toISOString();
@@ -25,7 +29,7 @@ function Entry(props) {
     const createEntry = () => {
         const checkIn = dateAndTimeToDate(startDate, startTime);
         const checkOut = dateAndTimeToDate(endDate, endTime);
-        UserService.createEntry("", checkIn, checkOut, "", "").then(
+        UserService.createEntry("", checkIn, checkOut, category, "").then(
             () => {
                 getData();
                 handleClose();
@@ -44,6 +48,22 @@ function Entry(props) {
         props.getData();
     };
 
+    const getCategories = () => {
+        UserService.getCategories().then(
+            response => {
+                let categories = response.data;
+                setCategories(categories);
+            },
+            error => {
+                let resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+                if (resMessage.includes("403")) {
+                    resMessage = "Something went wrong while saving your data :(";
+                }
+                console.log(resMessage);
+            }
+        )
+    }
+
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
@@ -60,21 +80,29 @@ function Entry(props) {
                             <Form.Row>
                                 <Col>
                                     <Form.Label>Start date</Form.Label>
-                                    <input type={"date"} className={"form-control"} style={{width: "auto"}} onChange={(e) => handleStartDate(e.target.value)}/>
+                                    <input type={"date"} className={"form-control"}
+                                           style={{width: "auto"}}
+                                           onChange={(e) => handleStartDate(e.target.value)}/>
                                 </Col>
                                 <Col>
                                     <Form.Label>Start time</Form.Label>
-                                    <input type={"time"} className={"form-control"} style={{width: "auto"}} onChange={(e) => handleStartTime(e.target.value)}/>
+                                    <input type={"time"} className={"form-control"}
+                                           style={{width: "auto"}}
+                                           onChange={(e) => handleStartTime(e.target.value)}/>
                                 </Col>
                             </Form.Row>
                             <Form.Row>
                                 <Col>
                                     <Form.Label>End date</Form.Label>
-                                    <input type={"date"} className={"form-control"} style={{width: "auto"}} onChange={(e) => handleEndDate(e.target.value)}/>
+                                    <input type={"date"} className={"form-control"}
+                                           style={{width: "auto"}}
+                                           onChange={(e) => handleEndDate(e.target.value)}/>
                                 </Col>
                                 <Col>
                                     <Form.Label>End time</Form.Label>
-                                    <input type={"time"} className={"form-control"} style={{width: "auto"}} onChange={(e) => handleEndTime(e.target.value)}/>
+                                    <input type={"time"} className={"form-control"}
+                                           style={{width: "auto"}}
+                                           onChange={(e) => handleEndTime(e.target.value)}/>
                                 </Col>
                             </Form.Row>
                         </Form.Group>
@@ -90,12 +118,11 @@ function Entry(props) {
                         </Form.Group>
                         <Form.Group controlId="selectCategory">
                             <Form.Label>Category</Form.Label>
-                            <Form.Control as="select">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <Form.Control as="select" onChange={(e) => handleCategory(e.target.value)}>
+                                {categories.map((item, index) => (
+                                    <option value={item.id}
+                                            key={index}
+                                            >{item.name}</option>))}
                             </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="noteText">
